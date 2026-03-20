@@ -6,7 +6,7 @@ from sklearn.pipeline import _name_estimators
 import numpy as np 
 import operator 
 
-class MajorityVoteClassifier(BaseEstimator, ClassifierMixin):
+class MajorityVoteClassifier(ClassifierMixin, BaseEstimator):
     def __init__(self, classifiers, vote="classlabel", weights=None):
         self.classifiers = classifiers 
         self.named_classifiers = {key: value for key, value in _name_estimators(classifiers)}
@@ -59,5 +59,4 @@ class MajorityVoteClassifier(BaseEstimator, ClassifierMixin):
             for name, step in self.named_classifiers.items():
                 for key, value in step.get_params(deep=True).items():
                     out[f'{name}__{key}'] = value
-                    
             return out
