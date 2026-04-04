@@ -78,17 +78,22 @@ class NeuralNetMLP:
         # Part 2: dLoss/dHiddenWeights
         ## = DeltaOut * dOutNet/dHiddenAct * dHiddenAct/dHiddenNet
         # * dHiddenNet/dWeight
+
         # [n_classes, n_hidden]
         d_z_out__a_h = self.weight_out
+
         # output dim: [n_examples, n_hidden]
         d_loss__a_h = np.dot(delta_out, d_z_out__a_h)
+
         # [n_examples, n_hidden]
         d_a_h__d_z_h = a_h * (1. - a_h) # sigmoid derivative
+
         # [n_examples, n_features]
         d_z_h__d_w_h = x
+
         # output dim: [n_hidden, n_features]
-        d_loss__d_w_h = np.dot((d_loss__a_h * d_a_h__d_z_h).T,
-        d_z_h__d_w_h)
+        d_loss__d_w_h = np.dot((d_loss__a_h * d_a_h__d_z_h).T, d_z_h__d_w_h)
         d_loss__d_b_h = np.sum((d_loss__a_h * d_a_h__d_z_h), axis=0)
+
         return (d_loss__dw_out, d_loss__db_out,
         d_loss__d_w_h, d_loss__d_b_h)
